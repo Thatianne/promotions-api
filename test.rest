@@ -1,0 +1,39 @@
+@protocol=http
+@host = localhost
+@port = 3333
+@baseUrl = {{protocol}}://{{host}}:{{port}}
+@contentType = application/json
+
+@nameStore = Zattini
+@logoStore = https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcReqh2k8J_6TcRVG7TNHey0avqJ60goGKMVgakMmgW_4inMKcz8&usqp=CAU
+@linkStore = www.zattini.com.br
+
+@storeId = 5e8fc53117083152611f73f8
+
+GET {{baseUrl}}/stores
+Content-Type: {{contentType}}
+
+###
+POST {{baseUrl}}/stores
+Content-Type: {{contentType}}
+
+{
+	"name": "{{nameStore}}",
+	"logo": "{{logoStore}}",
+	"link": "{{linkStore}}"
+}
+
+###
+PUT {{baseUrl}}/stores/{{storeId}}
+Content-Type: {{contentType}}
+
+{
+	"name": "{{nameStore}} 2",
+	"logo": "{{logoStore}}",
+	"link": "{{linkStore}}"
+}
+
+###
+DELETE {{baseUrl}}/stores/{{storeId}}
+Content-Type: {{contentType}}
+
