@@ -1,21 +1,32 @@
 const Store = require('../models/Store')
 const { SUCCESS, CREATED, NOT_FOUND } = require('../helpers/statusCode')
+const NotFound = require('../errors/NotFound')
 
 const methods = {
-    async list (req, res) {
+    async list (req, res, next) {
         try {
-            const stores = await Store.find()
+            let { sortBy = 'createdAt', search, limit, offset, descending = false } = req.query
+
+            limit = limit > 30 ? 30 : limit
+            const stores = await Store.find(
+                { name: { $regex: search ? `.*${search}.*` : '.*', $options: 'i'} },
+                null,
+                {
+                    skip: parseInt(offset),
+                    limit: parseInt(limit),
+                    sort: {
+                        [sortBy]: descending ? -1 : 1
+                    }
+                }
+            )
 
             res.status(SUCCESS)
             return res.json(stores)
-        } catch(error) {
-            next({
-                message: error.message,
-                statusCode: NOT_FOUND
-            })
+        } catch({ message }) {
+            next({ message, statusCode: NOT_FOUND })
         }
 	},
-	async create (req, res) {
+	async create (req, res, next) {
 		try {
             const { name, logo, link } = req.body
             let store = await Store.findOne({ name })
@@ -33,7 +44,7 @@ const methods = {
 			next({ message,  statusCode: NOT_FOUND })
 		}
 	},
-	async update (req, res) {
+	async update (req, res, next) {
         try {
             const id = req.params.id
             const { name, logo, link } = req.body
@@ -43,6 +54,9 @@ const methods = {
                 logo,
                 link
             })
+            if (!store) {
+                throw new NotFound("This store doesn't exists")
+            }
 
             res.status(SUCCESS)
             return res.json(store)
@@ -54,6 +68,9 @@ const methods = {
         try {
             const id = req.params.id
             const store = await Store.findById(id)
+            if (!store) {
+                throw new NotFound("This store doesn't exists")
+            }
 
             res.status(SUCCESS)
             return res.json(store)
@@ -61,13 +78,13 @@ const methods = {
             next({ message, statusCode: NOT_FOUND })
         }
     },
-    async delete (req, res) {
+    async delete (req, res, next) {
         try {
             const id = req.params.id
-            const store = await Store.deleteOne({ _id: id })
+            await Store.deleteOne({ _id: id })
 
             res.status(SUCCESS)
-            return res.json()
+            res.send()
         } catch( { message }) {
             next({ message, statusCode: NOT_FOUND })
         }

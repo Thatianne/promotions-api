@@ -6,17 +6,17 @@
 
 @nameStore = Zattini
 @logoStore = https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcReqh2k8J_6TcRVG7TNHey0avqJ60goGKMVgakMmgW_4inMKcz8&usqp=CAU
-@linkStore = www.zattini.com.br
-@storeId = 5e908eb1b2b0021c46f03ec6
+@linkStore = www.Zattini.com.br
+@storeId = 5e9649d5f1e7032e779af9c5
 
-@price = 350
-@title = Nome do produto
-@image = abc
-@link = qwe
-@percentage = -10.5
-@productId = 5e910923a3189930b910a531
+@price = 294.989990234375
+@title = Tênis Adidas Sensebounce Street Masculino - Preto e Laranja
+@image = https://img.vigiadepreco.com.br/bc/83c/f3b6/5d13a/bc83cf3b65d13aad8c0e5effce995d1313635a1ea6f6b18b3084886872928444.jpg
+@link = www.adidas.com
+@percentage = -5.507113933563232
+@productId = 5e964a8cffa5ef2f2a23fdcb
 
-GET {{baseUrl}}/stores
+GET {{baseUrl}}/stores/?sortBy=name&descending=true&offset=0&limit=0
 Content-Type: {{contentType}}
 
 ###
@@ -34,13 +34,13 @@ PUT {{baseUrl}}/stores/{{storeId}}
 Content-Type: {{contentType}}
 
 {
-	"name": "{{nameStore}} 3",
+	"name": "{{nameStore}} 2",
 	"logo": "{{logoStore}}",
 	"link": "{{linkStore}}"
 }
 
 ###
-GET {{baseUrl}}/stores/{{storeId}}ddd
+GET {{baseUrl}}/stores/{{storeId}}
 Content-Type: {{contentType}}
 
 ###
@@ -56,9 +56,9 @@ POST {{baseUrl}}/products
 Content-Type: {{contentType}}
 
 {
-	"storeid": "{{storeId}}",
+	"storeId": "{{storeId}}",
 	"price": "{{price}}",
-	"title":"{{title}}",
+	"title":"{{title}}ss",
 	"image":"{{image}}",
 	"link":"{{link}}",
 	"percentage": "{{percentage}}"
@@ -70,11 +70,15 @@ Content-Type: {{contentType}}
 
 {
 	"price": "{{price}}",
-	"title":"{{title}}",
+	"title":"{{title}} 2",
 	"image":"{{image}}",
 	"link":"{{link}}",
 	"percentage": "{{percentage}}"
 }
+
+###
+GET {{baseUrl}}/products/{{productId}}
+Content-Type: {{contentType}}
 
 ###
 DELETE {{baseUrl}}/products/{{productId}}
